@@ -1,0 +1,17 @@
+---
+# tasks file for lagoon.ansible_install
+- name: Get machine release
+  raw: lsb_release -i -s
+  changed_when: false
+  register: linux_id
+- name: Get machine release codename
+  raw: lsb_release -c -s
+  changed_when: false
+  register: linux_codename
+- name: gather os specific variables
+  include_tasks: "{{ lagoon_machine_version }}"
+  with_first_found:
+  - "install-{{ linux_id.stdout | lower | trim }}-{{ linux_codename.stdout | lower | trim }}.yml"
+  - "install-{{ linux_id.stdout | trim | lower }}.yml"
+  loop_control:
+    loop_var: lagoon_machine_version
