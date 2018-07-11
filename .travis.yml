@@ -7,5 +7,7 @@ before_install:
 - sudo apt-get install -qq python-pip
 - sudo pip install yamllint
 
+install: true
+
 script:
 - find . -name '*.yml'| xargs -n1 yamllint
