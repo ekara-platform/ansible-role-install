@@ -1,0 +1,3 @@
+---
+# defaults file for lagoon.ansible_install
+lagoon_install_proxy: 

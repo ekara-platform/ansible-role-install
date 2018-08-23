@@ -2,11 +2,11 @@
 - name: Add python modules
   raw: >
       test -e /usr/bin/python ||
-      export http_proxy={{hostvars['localhost'].lagoon_configuration_params.proxy.http_proxy}} &&
-      export https_proxy={{hostvars['localhost'].lagoon_configuration_params.proxy.https_proxy}} &&
-      export no_proxy={{hostvars['localhost'].lagoon_configuration_params.proxy.no_proxy}} &&
+      export http_proxy={{lagoon_install_proxy.http_proxy}} &&
+      export https_proxy={{lagoon_install_proxy.https_proxy}} &&
+      export no_proxy={{lagoon_install_proxy.no_proxy}} &&
       apt -y update && apt install -y python-minimal
-  when: hostvars['localhost'].lagoon_configuration_params.proxy is mapping 
+  when: lagoon_install_proxy is mapping 
   changed_when: false
   become: true
 
@@ -14,7 +14,7 @@
   raw: >
       test -e /usr/bin/python ||
       apt -y update && apt install -y python-minimal
-  when: hostvars['localhost'].lagoon_configuration_params.proxy is not mapping 
+  when: lagoon_install_proxy is not mapping 
   changed_when: false
   become: true
 
@@ -24,7 +24,7 @@
   apt:
     update_cache: true
   become: true
-  environment: "{{hostvars['localhost'].lagoon_configuration_params.proxy}}"
+  environment: "{{lagoon_install_proxy}}"
 
 - name: Install NFS dependencies for backup
   become: true
@@ -38,14 +38,14 @@
   - nfs-common
   - python
   - ntp
-  environment: "{{hostvars['localhost'].lagoon_configuration_params.proxy}}"
+  environment: "{{lagoon_install_proxy}}"
 
 - name: Update all packages to the latest version
   apt:
     upgrade: dist
   become: true
   register: upgradeMachine
-  environment: "{{hostvars['localhost'].lagoon_configuration_params.proxy}}"
+  environment: "{{lagoon_install_proxy}}"
 
 - name: reboot server
   become: true
