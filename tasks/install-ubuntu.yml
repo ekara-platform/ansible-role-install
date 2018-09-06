@@ -1,5 +1,5 @@
 ---
-- name: Add python modules
+- name: Add python modules with proxy
   raw: >
       test -e /usr/bin/python ||
       export http_proxy={{lagoon_install_proxy.http_proxy}} &&
@@ -15,7 +15,7 @@
   raw: >
       test -e /usr/bin/python ||
       apt -y update && apt install -y python-minimal
-  when: lagoon_install_proxy is not mapping
+  when: lagoon_install_proxy.http_proxy is not defined
   changed_when: false
   become: true
 
