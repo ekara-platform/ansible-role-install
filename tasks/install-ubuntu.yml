@@ -1,5 +1,6 @@
 ---
 - name: Add python modules with proxy
+  become: true
   raw: >
       test -e /usr/bin/python ||
       export http_proxy={{lagoon_install_proxy.http_proxy}} &&
@@ -9,22 +10,21 @@
   when:
   - lagoon_install_proxy.http_proxy is defined
   changed_when: false
-  become: true
 
 - name: Add python modules
+  become: true
   raw: >
       test -e /usr/bin/python ||
       apt -y update && apt install -y python-minimal
   when: lagoon_install_proxy.http_proxy is not defined
   changed_when: false
-  become: true
 
 - setup:
 
 - name: Run the equivalent of "apt-get update" as a separate step
+  become: true
   apt:
     update_cache: true
-  become: true
   environment: "{{lagoon_install_proxy}}"
 
 - name: Install NFS dependencies for backup
@@ -42,9 +42,9 @@
   environment: "{{lagoon_install_proxy}}"
 
 - name: Update all packages to the latest version
+  become: true
   apt:
     upgrade: dist
-  become: true
   register: upgradeMachine
   environment: "{{lagoon_install_proxy}}"
 
