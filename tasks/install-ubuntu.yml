@@ -6,7 +6,7 @@
       export https_proxy={{lagoon_install_proxy.https_proxy}} &&
       export no_proxy={{lagoon_install_proxy.no_proxy}} &&
       apt -y update && apt install -y python-minimal
-  when: 
+  when:
   - lagoon_install_proxy.http_proxy is defined
   changed_when: false
   become: true
