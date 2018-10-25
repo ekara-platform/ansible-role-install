@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-  - lagoon.ansible_install
+  - ekara.ansible_install
