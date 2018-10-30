@@ -27,7 +27,7 @@
     update_cache: true
   environment: "{{ekara_install_proxy}}"
 
-- name: Install NFS dependencies for backup
+- name: Install provided dependencies
   become: true
   apt:
     name={{ item }}
