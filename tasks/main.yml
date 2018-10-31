@@ -1,5 +1,5 @@
 ---
-# tasks file for lagoon.ansible_install
+# tasks file for ekara.ansible_install
 - name: Get machine release
   raw: lsb_release -i -s
   changed_when: false
@@ -9,9 +9,9 @@
   changed_when: false
   register: linux_codename
 - name: gather os specific variables
-  include_tasks: "{{ lagoon_machine_version }}"
+  include_tasks: "{{ ekara_machine_version }}"
   with_first_found:
   - "install-{{ linux_id.stdout | lower | trim }}-{{ linux_codename.stdout | lower | trim }}.yml"
   - "install-{{ linux_id.stdout | trim | lower }}.yml"
   loop_control:
-    loop_var: lagoon_machine_version
+    loop_var: ekara_machine_version

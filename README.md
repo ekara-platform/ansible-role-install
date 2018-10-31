@@ -25,7 +25,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: lagoon.ansible_install }
+         - { role: ekara.ansible_install }
 
 License
 -------
@@ -35,4 +35,4 @@ MIT
 Author Information
 ------------------
 
-https://github.com/lagoon-platform/ansible-role-install
+https://github.com/ekara-platform/ansible-role-install
