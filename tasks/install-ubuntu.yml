@@ -30,15 +30,14 @@
 - name: Install provided dependencies
   become: true
   apt:
-    name={{ item }}
-    state=present
-    update_cache=yes
-  with_items:
-  - apt-transport-https
-  - ca-certificates
-  - nfs-common
-  - python
-  - ntp
+    name:
+    - apt-transport-https
+    - ca-certificates
+    - nfs-common
+    - python
+    - ntp
+    state: present
+    update_cache: yes
   environment: "{{ekara_install_proxy}}"
 
 - name: Update all packages to the latest version
