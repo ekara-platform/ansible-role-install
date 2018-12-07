@@ -1,4 +1,18 @@
 ---
+- name: Wait if apt is already running
+  become: true
+  raw: fuser /var/lib/apt/lists/lock
+  register: ekara_install_lock_result
+  until: ekara_install_lock_result.rc == 1
+  retries: 60
+  delay: 1
+  failed_when: ekara_install_lock_result.rc == 0
+  changed_when: false
+  ignore_errors: true
+- name: APT in progress
+  fail:
+    msg: "The system may not be provisioned according to another APT command in progress."
+  when: ekara_install_lock_result.rc == 0
 - name: Add python modules with proxy
   become: true
   raw: >
@@ -36,6 +50,7 @@
     - nfs-common
     - python
     - ntp
+    - nvme-cli
     state: present
     update_cache: yes
   environment: "{{ekara_install_proxy}}"
