@@ -22,7 +22,7 @@
     export no_proxy={{ekara_install_proxy.no_proxy}} &&
     apt -y update && apt install -y python-minimal
   when: >
-    (ekara_install_proxy.http_proxy is defined and ekara_install_proxy.http_proxy != "") or 
+    (ekara_install_proxy.http_proxy is defined and ekara_install_proxy.http_proxy != "") or
     (ekara_install_proxy.https_proxy is defined and ekara_install_proxy.https_proxy != "")
   changed_when: false
 
@@ -55,7 +55,7 @@
     - ntp
     - nvme-cli
     state: present
-    update_cache: yes
+    update_cache: true
   environment: "{{ekara_install_proxy}}"
 
 - name: Update all packages to the latest version
