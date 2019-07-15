@@ -36,8 +36,6 @@
     (ekara_install_proxy.https_proxy is not defined or ekara_install_proxy.https_proxy == "")
   changed_when: false
 
-- setup:
-
 - name: Run the equivalent of "apt-get update" as a separate step
   become: true
   apt:
