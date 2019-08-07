@@ -74,6 +74,7 @@
     become: true
     shell: "apt-cache madison docker-ce | grep {{ ek_docker_version }} || :"
     register: ek_docker_versions_raw
+    changed_when: false
 
   - set_fact:
       ek_docker_versions: "{{ ek_docker_versions | default([]) + [ (item.split('|')[1]|trim) ] }}"
