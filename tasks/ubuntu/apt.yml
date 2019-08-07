@@ -88,7 +88,16 @@
   - debug: 
       msg: "Resolved Docker version: {{ ek_docker_versions[0] }}"
 
-  - name: "Install Docker {{ ek_docker_versions[0] }} and Docker compose"
+  - name: "Ensure existing versions of Docker and compose are absent"
+    become: true
+    environment: "{{ ek_proxy_env }}"
+    apt:
+      state: absent
+      name:
+      - docker-ce
+      - docker-compose
+
+  - name: "Ensure Docker {{ ek_docker_versions[0] }} and compose are installed"
     become: true
     environment: "{{ ek_proxy_env }}"
     apt:
@@ -104,7 +113,7 @@
       name: docker-ce
       selection: hold
 
-- name: Install the latest available version of Docker
+- name: Ensure the latest available version of Docker and compose are installed
   become: true
   environment: "{{ ek_proxy_env }}"
   apt:
