@@ -32,14 +32,14 @@
     - ca-certificates
     - software-properties-common
 
-- name: Get Docker official GPG key
+- name: Ensure Docker official GPG key is present
   become: true
   environment: "{{ ek_proxy_env }}"
   apt_key:
     url: "https://download.docker.com/linux/ubuntu/gpg"
     state: present
     
-- name: Add Docker stable repository
+- name: Ensure Docker stable repository is configured
   become: true
   environment: "{{ ek_proxy_env }}"
   apt_repository:
@@ -83,7 +83,7 @@
   
   - fail:
       msg: "Unable to find a suitable Docker version."
-    when: ek_docker_version | length == 0
+    when: ek_docker_versions | length == 0
 
   - debug: 
       msg: "Resolved Docker version: {{ ek_docker_versions[0] }}"
