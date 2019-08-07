@@ -1,3 +1,4 @@
 ---
 # defaults file for ekara.install
-proxy_env_vars: {}
+ek_proxy_env_vars: {}
+ek_docker_version: latest

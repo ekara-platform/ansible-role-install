@@ -57,5 +57,59 @@
     - ntp
     - python3
     - python3-pip
+
+- name: Ensure the Docker package can be altered
+  become: true
+  dpkg_selections:
+    name: docker-ce
+    selection: install
+
+- name: Resolve the latest acceptable version of Docker and ensure it is installed
+  when: ek_docker_version != 'latest'
+  block:
+  - debug: 
+      msg: "Requested Docker version: {{ ek_docker_version }}"
+
+  - name: Fetch list of available Docker versions matching the requested version
+    become: true
+    shell: apt-cache madison docker-ce | grep "{{ ek_docker_version }}"
+    register: ek_docker_versions_raw
+
+  - set_fact:
+      ek_docker_versions: "{{ ek_docker_versions | default([]) + [ (item.split('|')[1]|trim) ] }}"
+    loop: "{{ ek_docker_versions_raw.stdout_lines }}"
+    loop_control:
+      label: "{{ item.split('|')[1]|trim }}"
+  
+  - fail:
+      msg: "Unable to find a suitable Docker version."
+    when: ek_docker_version | length == 0
+
+  - debug: 
+      msg: "Resolved Docker version: {{ ek_docker_versions[0] }}"
+
+  - name: "Install Docker {{ ek_docker_versions[0] }} and Docker compose"
+    become: true
+    environment: "{{ proxy_env_vars }}"
+    apt:
+      state: latest
+      update_cache: true
+      name:
+      - docker-ce={{ ek_docker_versions[0] }}
+      - docker-compose
+
+  - name: Ensure the Docker package is preserved from version changes
+    become: true
+    dpkg_selections:
+      name: docker-ce
+      selection: hold
+
+- name: Install the latest available version of Docker
+  become: true
+  environment: "{{ proxy_env_vars }}"
+  apt:
+    state: latest
+    update_cache: true
+    name:
     - docker-ce
     - docker-compose
