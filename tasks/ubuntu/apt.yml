@@ -114,6 +114,7 @@
       selection: hold
 
 - name: Ensure the latest available version of Docker and compose are installed
+  when: ek_docker_version == 'latest'
   become: true
   environment: "{{ ek_proxy_env }}"
   apt:
