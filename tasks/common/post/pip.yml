@@ -1,0 +1,24 @@
+---
+- name: Upgrade PIP
+  become: true
+  environment: "{{ proxy_env_vars }}"
+  pip:
+    name: pip
+    extra_args: --upgrade
+
+- name: Ensure that outdated PIP module docker-py is absent
+  become: true
+  pip:
+    state: absent
+    name:
+    - docker-py
+
+- name: Ensure that required PIP modules are installed
+  become: true
+  environment: "{{ proxy_env_vars }}"
+  pip:
+    state: latest
+    name:
+    - docker
+    - docker-compose
+    - jsondiff
