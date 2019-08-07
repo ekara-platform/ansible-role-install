@@ -21,17 +21,21 @@
     msg: "The system cannot be further installed because another APT command is still running."
   when: ek_install_lock_result is defined and ek_install_lock_result.rc == 0
 
+- name: Ensure that APT cache is up-to-date
+  become: true
+  environment: "{{ proxy_env_vars }}"
+  apt:
+    update_cache: true
+
 - name: Ensure that preliminary dependencies are present
   become: true
   environment: "{{ proxy_env_vars }}"
   apt:
     state: latest
-    update_cache: true
     name:
     - apt-transport-https
     - ca-certificates
     - software-properties-common
-    - curl
 
 - name: Get Docker official GPG key
   become: true
@@ -47,12 +51,20 @@
     repo: "deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
     state: present
 
+- name: Ensure that Python 2.x is absent
+  become: true
+  environment: "{{ proxy_env_vars }}"
+  apt:
+    state: absent
+    name:
+    - python
+    - python-pip
+
 - name: Ensure that required dependencies are installed
   become: true
   environment: "{{ proxy_env_vars }}"
   apt:
     state: latest
-    update_cache: true
     name:
     - nfs-common
     - ntp
