@@ -72,7 +72,7 @@
 
   - name: Fetch list of available Docker versions matching the requested version
     become: true
-    shell: apt-cache madison docker-ce | grep "{{ ek_docker_version }}"
+    shell: "apt-cache madison docker-ce | grep {{ ek_docker_version }} || :"
     register: ek_docker_versions_raw
 
   - set_fact:
