@@ -92,7 +92,7 @@
     become: true
     environment: "{{ ek_proxy_env }}"
     apt:
-      state: latest
+      state: present
       update_cache: true
       name:
       - docker-ce={{ ek_docker_versions[0] }}
