@@ -83,7 +83,7 @@
   
   - fail:
       msg: "Unable to find a suitable Docker version."
-    when: ek_docker_versions | length == 0
+    when: (ek_docker_versions | default([])) | length == 0
 
   - debug: 
       msg: "Resolved Docker version: {{ ek_docker_versions[0] }}"
