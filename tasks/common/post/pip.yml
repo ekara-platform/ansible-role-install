@@ -3,12 +3,14 @@
   become: true
   environment: "{{ proxy_env_vars }}"
   pip:
+    executable: pip3
     state: latest
     name: pip
 
 - name: Ensure that outdated PIP module docker-py is absent
   become: true
   pip:
+    executable: pip3
     state: absent
     name: docker-py
 
@@ -16,6 +18,7 @@
   become: true
   environment: "{{ proxy_env_vars }}"
   pip:
+    executable: pip3
     state: latest
     name:
     - docker
