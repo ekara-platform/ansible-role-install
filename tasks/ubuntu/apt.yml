@@ -19,7 +19,7 @@
 - name: APT still running
   fail:
     msg: "The system cannot be further installed because another APT command is still running."
-  when: ek_install_lock_result is defined and ek_install_lock_result.rc == 0
+  when: "(ek_install_lock_result | default({'rc': 1})).rc == 0"
 
 - name: Ensure that preliminary dependencies are present
   become: true
