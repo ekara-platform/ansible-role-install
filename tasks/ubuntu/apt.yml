@@ -78,7 +78,8 @@
     register: ek_docker_versions_raw
     changed_when: false
 
-  - set_fact:
+  - name: Parse available Docker versions
+    set_fact:
       ek_docker_versions: "{{ ek_docker_versions | default([]) + [ (item.split('|')[1]|trim) ] }}"
     loop: "{{ ek_docker_versions_raw.stdout_lines }}"
     loop_control:
