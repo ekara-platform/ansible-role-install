@@ -58,6 +58,7 @@
     - ntp
     - python3
     - python3-pip
+    - rsync
 
 - name: Ensure the Docker package can be altered
   become: true
